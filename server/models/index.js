@@ -3,30 +3,42 @@ var db = require('../db');
 
 
 
+
 module.exports = {
   messages: {
     get: function () {console.log("inside models messages get")}, // a function which produces all the messages
     post: function () {
-       // a function which can be used to insert a message into the database
-     }
-   },
+     db.query('SELECT * FROM messages;', function(err, result){
+      console.log('inside the query!!!!!!!!!!!!');
+      if(err){
+        console.log('WE have an error!!!!!!!!');
+        throw err;
+      }else{
+        console.log(result[0]); 
+      }
+    });   
+   }
+ },
 
-   users: {
+ users: {
     // Ditto as above.
     get: function () {
+      console.log('hi from inside models users get function!!!!!!')
     },
-    post: function () {
-      var foo = [1,2,3]
-      dbConnection.query('SELECT * FROM messages;', foo, function(err, result){
+    post: function (req, res) {
+      var username = req.body.username;
+      var query = "INSERT INTO messages (username) VALUES " + mysql.escape(username) + ";";
+      console.log('query', query);
+      var queryObj = db.query(query, function(err, rows, result){
         console.log('inside the query!!!!!!!!!!!!');
         if(err){
           console.log('WE have an error!!!!!!!!');
           throw err;
         }else{
-    console.log(result[0]);       // Column1 as a result
-  }
-});   
+          console.log('we do not have an error!');
+        }
+      });
+
     }
   }
-};
-
+}
