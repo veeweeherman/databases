@@ -11,18 +11,10 @@ var dbConnection = mysql.createConnection({
   database: "chat"
 });
 
-dbConnection.query('select username;', function(err, result){
-  console.log('inside the query!!!!!!!!!!!!');
-  if(err){
-    console.log('WE have an error!!!!!!!!');
-    throw err;
-  }else{
-    console.log(result[0]);       // Column1 as a result
-  }
-});
 
 
-// dbConnection.connect();
+dbConnection.connect();
 
 
-// dbConnection.end();
+dbConnection.end();
+module.exports = dbConnection;
