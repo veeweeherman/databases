@@ -1,4 +1,5 @@
 var db = require('../db');
+var mysql = require('mysql');
 
 
 
@@ -7,16 +8,20 @@ var db = require('../db');
 module.exports = {
   messages: {
     get: function () {console.log("inside models messages get")}, // a function which produces all the messages
-    post: function () {
-     db.query('SELECT * FROM messages;', function(err, result){
-      console.log('inside the query!!!!!!!!!!!!');
+    post: function (req, res) {
+     var username = req.body.username;
+     var message = req.body.message;
+     var roomname = req.body.roomname;
+     var query = "INSERT INTO messages (username, message, roomname) VALUES ('"+username+"','"+mysql.escape(message)+"','"+roomname+"');";
+     var queryObj = db.query(query, function(err, rows, result){
       if(err){
         console.log('WE have an error!!!!!!!!');
         throw err;
       }else{
-        console.log(result[0]); 
+        console.log('we do not have an error!');
       }
-    });   
+    });
+     res.send();
    }
  },
 
@@ -27,8 +32,7 @@ module.exports = {
     },
     post: function (req, res) {
       var username = req.body.username;
-      var query = "INSERT INTO messages (username) VALUES " + mysql.escape(username) + ";";
-      console.log('query', query);
+      var query = "INSERT INTO messages (username) VALUES ('" + username + "');";
       var queryObj = db.query(query, function(err, rows, result){
         console.log('inside the query!!!!!!!!!!!!');
         if(err){
@@ -38,7 +42,7 @@ module.exports = {
           console.log('we do not have an error!');
         }
       });
-
+      res.send();
     }
   }
 }
