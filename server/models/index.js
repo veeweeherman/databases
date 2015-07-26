@@ -1,5 +1,5 @@
 var db = require('../db');
-var mysql = require('mysql');
+var mysql = require('mysql'); 
 
 
 
@@ -11,8 +11,8 @@ module.exports = {
     post: function (req, res) {
      var username = req.body.username;
      var message = req.body.message;
-     var roomname = req.body.roomname;
-     var query = "INSERT INTO messages (username, message, roomname) VALUES ('"+username+"','"+mysql.escape(message)+"','"+roomname+"');";
+     var room = req.body.room;
+     var query = "INSERT INTO messages (username, message, room) VALUES ('"+username+"','"+message+"','"+room+"');";
      var queryObj = db.query(query, function(err, rows, result){
       if(err){
         console.log('WE have an error!!!!!!!!');
@@ -25,15 +25,15 @@ module.exports = {
    }
  },
 
- users: {
+users: {
     // Ditto as above.
     get: function () {
       console.log('hi from inside models users get function!!!!!!')
     },
-    post: function (req, res) {
+    post: function (req,res) {
       var username = req.body.username;
       var query = "INSERT INTO messages (username) VALUES ('" + username + "');";
-      var queryObj = db.query(query, function(err, rows, result){
+      db.query(query, function(err, rows, result){
         console.log('inside the query!!!!!!!!!!!!');
         if(err){
           console.log('WE have an error!!!!!!!!');
